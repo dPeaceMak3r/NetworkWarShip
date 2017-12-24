@@ -1,10 +1,14 @@
 package org.academiadecodigo.bootcamp;
 
+import com.sun.tools.corba.se.idl.toJavaPortable.Helper;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Player {
 
@@ -33,6 +37,21 @@ public class Player {
             PlayerGrid playerGrid=new PlayerGrid();
             playerGrid.shipsGrid();
 
+            //Then, it creates a new thread in the client helper to receive the messages
+            //This will be created with the Executor Frame Work
+            ExecutorService cachedPool = Executors.newCachedThreadPool();
+            cachedPool.submit(new PlayerHelper(playerSocket));
+
+            while (playerSocket.isBound()){
+
+                //SEE THIS AFTER
+                String text=buffer.readLine();
+
+                //You have to use the println to terminate the output
+                output.println(text);
+
+            }
+
 
 
         } catch (IOException e) {
@@ -41,7 +60,6 @@ public class Player {
 
 
     }
-
 
 
 }
