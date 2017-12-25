@@ -9,10 +9,10 @@ public class PlayerHelper implements Runnable {
 
 
     private Socket playerSocket;
+    private String[][]enemyGrid;
 
     public PlayerHelper(Socket clientSocket){
         this.playerSocket=playerSocket;
-
     }
 
     @Override
@@ -23,8 +23,26 @@ public class PlayerHelper implements Runnable {
             try {
                 BufferedReader input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
 
-                //CHANGE THIS FOR THE COORDINATES
+                //I HAVE TO SEE THIS BETTER
                 String message= input.readLine();
+                //Checks if the message received is the game over message
+                if(message.equals("GameOver")){
+                    playerSocket.close();
+                }else{
+                    String []shotsTaken=message.split(" ");
+                    for(int i=0; i<shotsTaken.length;i+=2){
+
+                    }
+
+                }
+
+
+
+
+
+
+
+
 
                 if(message!=null){
                     System.out.println(message);
@@ -38,4 +56,5 @@ public class PlayerHelper implements Runnable {
 
 
     }
+
 }

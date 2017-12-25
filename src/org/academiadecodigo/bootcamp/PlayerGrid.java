@@ -8,9 +8,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayerGrid {
 
-    private final int rows=8;
-    private final int columns =10;
-    private final String [][] grid=new String[rows][columns];
+    public static final int ROWS=8;
+    public static final int COLUMNS =10;
+    private final String [][] grid=new String[ROWS][COLUMNS];
 
     public void shipsGrid(){
 
@@ -36,7 +36,7 @@ public class PlayerGrid {
 
                 System.out.println("============================================================");
                 System.out.println("## What is the initial position of the "+shipName+" ("+holes+" holes) ##");
-                System.out.println("## Separate the position with a white space ##");
+                System.out.println("         ## Separate the position with a white space ##");
                 System.out.println("============================================================");
                 String [] firstPosition=buffer.readLine().split(" ");
                 if(checkFirstCoordinates(firstPosition,shipType)){
@@ -46,7 +46,7 @@ public class PlayerGrid {
 
                 //Now comes the final coordinates
                 System.out.println("============================================================");
-                System.out.println("## What is the final position of the Carrier (5 holes) ##");
+                System.out.println("## What is the final position of the "+shipName+" ("+holes+" holes) ##");
                 System.out.println("      ## Separate the position with a white space ##");
                 System.out.println("============================================================");
 
@@ -66,7 +66,7 @@ public class PlayerGrid {
 
     private boolean checkFirstCoordinates(String [] position, String shipType){
         //To check if the coordinates given belong to the grid
-        if(Integer.parseInt(position[0])>rows ||Integer.parseInt(position[1])>columns){
+        if(Integer.parseInt(position[0])>ROWS ||Integer.parseInt(position[1])>COLUMNS){
             System.out.println("Those coordinates are out of bound. Please choose new ones.");
             return false;
         }else{
@@ -88,7 +88,7 @@ public class PlayerGrid {
     private boolean checkSecondCoordinates(String [] firstPosition, String [] secondPosition, String shipType, int holes){
 
         //The first condition is to check if the coordinates are within the grid
-        if(Integer.parseInt(secondPosition[0])>rows ||Integer.parseInt(secondPosition[1])>columns) {
+        if(Integer.parseInt(secondPosition[0])>ROWS ||Integer.parseInt(secondPosition[1])>COLUMNS) {
             System.out.println("Those coordinates are out of bound. Please choose new ones.");
             return false;
         }
@@ -133,6 +133,11 @@ public class PlayerGrid {
         }
 
 
+    }
+
+    //GETTER
+    public String [][] getGrid(){
+        return this.grid;
     }
 
 }
