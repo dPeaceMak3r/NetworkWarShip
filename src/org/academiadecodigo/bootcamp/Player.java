@@ -43,6 +43,10 @@ public class Player {
             //Loads the grid
             grid=playerGrid.getGrid();
 
+            //Now sends the grid to the server
+            //WEAK SPOT, MAY NOT WORK WITH A MATRIX
+            output.println(grid);
+
             //Then, it creates a new thread in the client helper to receive the messages
             //This will be created with the Executor Frame Work
             ExecutorService cachedPool = Executors.newCachedThreadPool();
@@ -111,6 +115,8 @@ public class Player {
             }
 
 
+            playerSocket.close();
+            output.close();
 
         } catch (IOException e) {
             System.err.println("It wasn't possible to establish a connection.");

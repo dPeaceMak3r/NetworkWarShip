@@ -24,17 +24,17 @@ public class PlayerHelper implements Runnable {
                 BufferedReader input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
 
                 //I HAVE TO SEE THIS BETTER
-                String message= input.readLine();
-                //Checks if the message received is the game over message
-                if(message.equals("GameOver")){
-                    playerSocket.close();
-                }else{
-                    String []shotsTaken=message.split(" ");
-                    for(int i=0; i<shotsTaken.length;i+=2){
+                String [] message= input.readLine().split("/");
 
-                    }
-
+                //The player recieves 2 messages. One telling where the fires he shot landed.
+                //Another with the moves from the opponent, showing the where they hitted
+                //So, the server will send two types of message, wich with their code.
+                if(message[0].equals("00")){
+                    System.out.println("Your hits: "+message[1]);
+                }else if(message[0].equals("01")){
+                    System.out.println(message);
                 }
+
 
 
 
