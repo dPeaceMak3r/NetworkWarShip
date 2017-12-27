@@ -33,9 +33,13 @@ public class Server {
                 Socket clientSocket = serverSocket.accept();
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 inData = in.readLine().split(" ");
-
                 playerData[counter] = new Data(clientSocket, inData);
                 counter++;
+                if (counter == 2){
+
+                    counter = 0;
+
+                }
 
             }
 
