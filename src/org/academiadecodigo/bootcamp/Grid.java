@@ -7,8 +7,8 @@ public class Grid {
 
 
 
-    public static int ROWS = 11;
-    public static int COLS = 8;
+    public static int ROWS = 8;
+    public static int COLS = 11;
 
 
 
@@ -18,9 +18,9 @@ public class Grid {
 
     public void createGrid(){
 
-        for (int i = 0; i < COLS; i++) {
-            for (int j = 0; j < ROWS; j++) {
-                grid[j][i] = " - ";
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                grid[i][j] = " - ";
             }
         }
     }
@@ -28,13 +28,37 @@ public class Grid {
 
     public void showGrid(){
 
+        boolean printR = true;
 
-        for (int i = 0; i < COLS; i++) {
 
-            for (int j = 0; j < ROWS; j++) {
-                System.out.print(grid[j][i]);
+        for (int i = 0; i <= COLS; i++) {
+            if(i>10){
+                System.out.print(i +" ");
+            }else{
+                System.out.print(" "+ i +" ");
+            }
+
+        }
+        System.out.println();
+
+        int r=1;
+
+        for (int i = 0; i < ROWS; i++) {
+
+
+
+            for (int j = 0; j < COLS; j++) {
+
+                if(printR){
+                    System.out.print(" "+ r +" ");
+                }
+                printR = false;
+                System.out.print(grid[i][j]);
             }
             System.out.println();
+            printR = true;
+            r++;
+
         }
 
 
@@ -80,7 +104,7 @@ public class Grid {
                     x = Integer.parseInt(xIn);
 
                     if(x < 0 || x > COLS){
-                        System.out.println("Enter a number between 0 and "+ COLS);
+                        System.out.println("Enter a number between 0 and " + COLS);
                         continue;
                     }
 
@@ -88,6 +112,7 @@ public class Grid {
                     System.out.println("Invalid In-Put (Enter a number)");
                     continue;
                 }
+
                 validX = true;
 
             }
