@@ -35,6 +35,7 @@ public class Player {
 
             //This is a test to clear the console
             System.out.print("\033[H\033[2J");
+            System.out.flush();
 
             //It now call the method that handles the put of the ships in the grid
             PlayerGrid playerGrid=new PlayerGrid();
@@ -51,6 +52,10 @@ public class Player {
             //This will be created with the Executor Frame Work
             ExecutorService cachedPool = Executors.newCachedThreadPool();
             cachedPool.submit(new PlayerHelper(playerSocket));
+
+            //Creates a PlayerHelper for the use of standby method
+            PlayerHelper helper=new PlayerHelper();
+
 
             while (playerSocket.isBound()){
 
@@ -106,13 +111,12 @@ public class Player {
                     }
                 }
 
-
-
-                //SEE THIS AFTER
-                //String text=buffer.readLine();
-
                 //You have to use the println to terminate the output
                 output.println(shots);
+
+                //Calls the standby method, so it gets on pause until the opponent makes he's play
+                helper.standby();
+
 
             }
 
@@ -134,7 +138,7 @@ public class Player {
             System.out.println("The given coordinates are out of the grid. Please put new ones");
             return false;
         }
-        
+
 
         //Then check if the coordinates were already said another time
         if(hitGrid[Integer.parseInt(tryShots[0])][Integer.parseInt(tryShots[1])]){

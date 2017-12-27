@@ -11,6 +11,9 @@ public class PlayerHelper implements Runnable {
     private Socket playerSocket;
     private String[][]enemyGrid;
 
+    //Used to override when synchronizing the threads
+    public PlayerHelper(){}
+
     public PlayerHelper(Socket clientSocket){
         this.playerSocket=playerSocket;
     }
@@ -42,7 +45,11 @@ public class PlayerHelper implements Runnable {
 
 
 
+                //Notify the player, after the opponent has made a move
+                synchronized (this){
+                    notify();
 
+                }
 
                 if(message!=null){
                     System.out.println(message);
@@ -55,6 +62,14 @@ public class PlayerHelper implements Runnable {
         }
 
 
+    }
+
+    public synchronized void standby(){
+        try {
+            wait();
+        } catch (InterruptedException e) {
+            System.err.println("Thread locked.");
+        }
     }
 
 }
