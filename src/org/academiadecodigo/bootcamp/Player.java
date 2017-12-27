@@ -1,6 +1,6 @@
 package org.academiadecodigo.bootcamp;
 
-import com.sun.tools.corba.se.idl.toJavaPortable.Helper;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class Player {
     public static void main(String[] args) {
 
         String [][] grid=null;
-        Boolean [][]hitGrid = new Boolean[PlayerGrid.ROWS][PlayerGrid.COLUMNS];
+        boolean [][]hitGrid = new boolean[PlayerGrid.ROWS][PlayerGrid.COLUMNS];
 
         try {
             Socket playerSocket = new Socket("localhost",8080);
@@ -38,7 +38,7 @@ public class Player {
 
             //It now call the method that handles the put of the ships in the grid
             PlayerGrid playerGrid=new PlayerGrid();
-            playerGrid.shipsGrid();
+            //playerGrid.shipsGrid();
 
             //Loads the grid
             grid=playerGrid.getGrid();
@@ -63,6 +63,8 @@ public class Player {
                     System.out.println("  Rows(0-8); Columns(0-11)");
                     System.out.println("===========================================");
                     String []tryShots=buffer.readLine().split(" ");
+
+                    hitGrid[0][0]=true;
 
                     //Now it needs to check if the input coordinates were inside the grid, or was already said
                     if(checkCoordinates(tryShots,hitGrid)){
@@ -125,16 +127,17 @@ public class Player {
 
     }
 
-    public static boolean checkCoordinates(String [] tryShots, Boolean [][] hitGrid){
+    public static boolean checkCoordinates(String [] tryShots, boolean [][] hitGrid){
 
         //First we test to see if the given coordinates were inside the grid
         if(Integer.parseInt(tryShots[0])>PlayerGrid.ROWS ||Integer.parseInt(tryShots[1])>PlayerGrid.COLUMNS ){
             System.out.println("The given coordinates are out of the grid. Please put new ones");
             return false;
         }
+        
 
         //Then check if the coordinates were already said another time
-        if(hitGrid[Integer.parseInt(tryShots[0])][Integer.parseInt(tryShots[1])]==true){
+        if(hitGrid[Integer.parseInt(tryShots[0])][Integer.parseInt(tryShots[1])]){
             System.out.println("You have already said these coordinates");
             return false;
         }

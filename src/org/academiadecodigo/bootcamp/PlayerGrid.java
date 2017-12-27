@@ -9,7 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class PlayerGrid {
 
     public static final int ROWS=8;
-    public static final int COLUMNS =10;
+    public static final int COLUMNS =11;
     private final String [][] grid=new String[ROWS][COLUMNS];
 
     public void shipsGrid(){
@@ -39,7 +39,7 @@ public class PlayerGrid {
                 System.out.println("         ## Separate the position with a white space ##");
                 System.out.println("============================================================");
                 String [] firstPosition=buffer.readLine().split(" ");
-                if(checkFirstCoordinates(firstPosition,shipType)){
+                if(!checkFirstCoordinates(firstPosition,shipType)){
                     //To see if the first position is within boundaries
                     continue;
                 }
@@ -51,9 +51,14 @@ public class PlayerGrid {
                 System.out.println("============================================================");
 
                 String [] secondPosition=buffer.readLine().split(" ");
-                if(checkSecondCoordinates(firstPosition,secondPosition,"Ca",5)){
+                if(checkSecondCoordinates(firstPosition,secondPosition,shipType,holes)){
                     break;
+                }else{
+                    //To reset the grid, if the second coordinates were wrong
+                    grid[Integer.parseInt(firstPosition[0])][Integer.parseInt(firstPosition[1])]=null;
                 }
+
+
 
             }
 
@@ -66,13 +71,13 @@ public class PlayerGrid {
 
     private boolean checkFirstCoordinates(String [] position, String shipType){
         //To check if the coordinates given belong to the grid
-        if(Integer.parseInt(position[0])>ROWS ||Integer.parseInt(position[1])>COLUMNS){
+        if(Integer.parseInt(position[0])>=ROWS ||Integer.parseInt(position[1])>=COLUMNS){
             System.out.println("Those coordinates are out of bound. Please choose new ones.");
             return false;
         }else{
             int row=Integer.parseInt(position[0]);
             int col=Integer.parseInt(position[1]);
-            grid[row][col]=shipType;
+
 
             //Now it needs to check if the coordinates are already occupied
            if(grid[row][col]!=null){
@@ -80,6 +85,8 @@ public class PlayerGrid {
                System.out.println("These coordinates are already in use, please choose new ones");
                return false;
            }
+
+            grid[row][col]=shipType;
 
             return true;
         }
@@ -98,7 +105,7 @@ public class PlayerGrid {
         int firstCol=Integer.parseInt(firstPosition[1]);
         int secondRow=Integer.parseInt(secondPosition[0]);
         int secondCol=Integer.parseInt(secondPosition[1]);
-        if(firstRow==secondRow && (firstCol-secondCol==holes) || firstCol==secondCol && (firstRow-secondRow==holes)){
+        if((firstRow==secondRow && (Math.abs(firstCol-secondCol)==holes)) || (firstCol==secondCol && (Math.abs(firstRow-secondRow)==holes))){
             //This means that the ship placed is in the right place
             //Then fills the grid with the position of the ship
             //It will first fill the final position
@@ -107,23 +114,40 @@ public class PlayerGrid {
                 if(secondRow==firstRow){
                     //It needs to check all the coordinates im line to see if they are already taken
                     //The logic is to only use one operation to either fill to the right, or to the left
-                    if(grid[secondRow][Math.abs((firstCol-secondCol-i))]!=null){
-                        grid[secondRow][Math.abs((firstCol-secondCol-i))]=shipType;
+                    if(secondCol>firstCol){
+                        if(grid[secondRow][firstCol+i]==null) {
+                            grid[secondRow][firstCol+i] = shipType;
+                        }else{
+                            System.out.println("There is already a ship between the inital and final coordinates");
+                            return false;
+                        }
                     }else{
-                        System.out.println("There is already in ship between the inital and final coordinates");
-                        return false;
+                        if(grid[secondRow][firstCol-i]==null) {
+                            grid[secondRow][firstCol-i] = shipType;
+                        }else{
+                            System.out.println("There is already a ship between the inital and final coordinates");
+                            return false;
+                        }
                     }
 
                 }else{
                     //It needs to check all the coordinates im line to see if they are already taken
                     //The logic is to only use one operation to either fill up or down
-                    if(grid[Math.abs((firstCol-secondCol-i))][secondCol]!=null){
-                        grid[Math.abs((firstRow-secondRow-i))][secondCol]=shipType;
+                    if(secondRow>firstRow) {
+                        if (grid[firstRow + i][secondCol] == null) {
+                            grid[firstRow + i][secondCol] = shipType;
+                        } else {
+                            System.out.println("There is already in ship between the inital and final coordinates");
+                            return false;
+                        }
                     }else{
-                        System.out.println("There is already in ship between the inital and final coordinates");
-                        return false;
+                        if (grid[firstRow - i][secondCol] == null) {
+                            grid[firstRow - i][secondCol] = shipType;
+                        } else {
+                            System.out.println("There is already in ship between the inital and final coordinates");
+                            return false;
+                        }
                     }
-
                 }
             }
             return true;
