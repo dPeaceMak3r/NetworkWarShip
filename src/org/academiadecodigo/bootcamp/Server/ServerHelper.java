@@ -32,38 +32,38 @@ public class ServerHelper implements Runnable {
                 //Switch for the type of ships
                 switch (playerData[counter].getGrid()[firstShot][secondShot]){
                     case "Ca":
-                        carrier.hit();
+                        playerData[counter].getShipList().get(0).hit();
                         shipsHit=shipsHit+" "+"Carrier hit";
-                        if(carrier.isDestroyed){
-                            shipsDestroyed=shipsDestroyed+" "+carrier.getMessage();
+                        if(playerData[counter].getShipList().get(0).isDestroyed()){
+                            shipsDestroyed=shipsDestroyed+" "+playerData[counter].getShipList().get(0).getMessage();
                         }
                         break;
                     case "Ba":
-                        battleship.hit();
+                        playerData[counter].getShipList().get(1).hit();
                         shipsHit=shipsHit+" "+"Battleship hit";
-                        if(battleship.isDestroyed){
-                            shipsDestroyed=shipsDestroyed+" "+battleship.getMessage();
+                        if(playerData[counter].getShipList().get(1).isDestroyed()){
+                            shipsDestroyed=shipsDestroyed+" "+playerData[counter].getShipList().get(1).getMessage();
                         }
                         break;
                     case "Cr":
-                        cruiser.hit();
+                        playerData[counter].getShipList().get(2).hit();
                         shipsHit=shipsHit+" "+"Cruiser hit";
-                        if(cruiser.isDestroyed){
-                            shipsDestroyed=shipsDestroyed+" "+cruiser.getMessage();
+                        if(playerData[counter].getShipList().get(2).isDestroyed()){
+                            shipsDestroyed=shipsDestroyed+" "+playerData[counter].getShipList().get(2).getMessage();
                         }
                         break;
                     case "Su":
-                        submarine.hit();
+                        playerData[counter].getShipList().get(3).hit();
                         shipsHit=shipsHit+" "+"Submarine hit";
-                        if(submarine.isDestroyed){
-                            shipsDestroyed=shipsDestroyed+" "+submarine.getMessage();
+                        if(playerData[counter].getShipList().get(3).isDestroyed()){
+                            shipsDestroyed=shipsDestroyed+" "+playerData[counter].getShipList().get(3).getMessage();
                         }
                         break;
                     case "De":
-                        destroyer.hit();
+                        playerData[counter].getShipList().get(4).hit();
                         shipsHit=shipsHit+" "+"Destroyer hit";
-                        if(destroyer.isDestroyed){
-                            shipsDestroyed=shipsDestroyed+" "+destroyer.getMessage();
+                        if(playerData[counter].getShipList().get(4).isDestroyed()){
+                            shipsDestroyed=shipsDestroyed+" "+playerData[counter].getShipList().get(4).getMessage();
                         }
                         break;
 

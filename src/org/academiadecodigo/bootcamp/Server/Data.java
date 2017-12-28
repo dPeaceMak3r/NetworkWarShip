@@ -1,6 +1,10 @@
 package org.academiadecodigo.bootcamp.Server;
 
+import org.academiadecodigo.bootcamp.Ship;
+import org.academiadecodigo.bootcamp.ShipFactory;
+
 import java.net.Socket;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Data {
 
@@ -10,6 +14,7 @@ public class Data {
     private Socket clientSocket;
     private String name;
     private String[][] grid = new String[ROWS][COLS];
+    private CopyOnWriteArrayList <Ship> shipList;
 
     public Data(Socket clientSocket, String[] data){
 
@@ -28,6 +33,10 @@ public class Data {
 
         }
 
+        //Create the ships
+        ShipFactory factory= new ShipFactory();
+        shipList=factory.createShips();
+
 
     }
 
@@ -43,6 +52,10 @@ public class Data {
 
         return name;
 
+    }
+
+    public CopyOnWriteArrayList<Ship> getShipList(){
+        return this.shipList;
     }
 
     public void setGrid(String[][] grid) {
