@@ -12,11 +12,11 @@ public CopyOnWriteArrayList createShips(){
 
 
 
-    Ship carrier = new Carrier(5);
-    Ship battleship = new Battleship(4);
-    Ship cruiser = new Cruiser(3);
-    Ship submarine = new Submarine(3);
-    Ship destroyer = new Destroyer(2);
+    Ship carrier = new Carrier(5, "Carrier");
+    Ship battleship = new Battleship(4, "Battleship");
+    Ship cruiser = new Cruiser(3, "Cruiser");
+    Ship submarine = new Submarine(3,"Submarine");
+    Ship destroyer = new Destroyer(2, "Destroyer");
 
     shipList.add(carrier);
     shipList.add(battleship);

@@ -16,7 +16,7 @@ public class Main {
 
 
         System.out.println("list size: " + shipList.size());
-        Destroyer d = new Destroyer(3);
+        Destroyer d = new Destroyer(3, "Destroyer");
         System.out.print("Destr: ");
         d.hit();
 
@@ -36,6 +36,9 @@ public class Main {
 
             System.out.print("size: ");System.out.println(shipList.get(i).getSize());
             System.out.println();
+            System.out.println(shipList.get(i).getMessage());
+            System.out.println();
+
         }
 
 

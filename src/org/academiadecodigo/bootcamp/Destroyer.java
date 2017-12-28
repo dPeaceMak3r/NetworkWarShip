@@ -5,8 +5,8 @@ public class Destroyer extends Ship{
 
     private boolean isDestroyed;
 
-    public Destroyer(int size) {
-        super(size);
+    public Destroyer(int size, String name) {
+        super(size, name);
     }
 
 

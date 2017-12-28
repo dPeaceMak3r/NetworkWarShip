@@ -4,8 +4,8 @@ public class Battleship extends Ship{
 
 
 
-    public Battleship(int size) {
-        super(size);
+    public Battleship(int size, String name) {
+        super(size, name);
     }
 
 

@@ -4,10 +4,13 @@ public class Ship implements Shootable{
 
     private int size ;
     private boolean isDestroyed;
+    private String name;
 
 
-    public Ship(int size){
+    public Ship(int size, String name){
         this.size = size;
+        this.name = name;
+
     }
 
     @Override
@@ -29,5 +32,10 @@ public class Ship implements Shootable{
 
     public boolean isDestroyed() {
         return isDestroyed;
+    }
+
+    public String getMessage(){
+
+        return "Your " + name + " has been destroyed!";
     }
 }
