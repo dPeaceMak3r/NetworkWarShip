@@ -1,5 +1,4 @@
-package org.academiadecodigo.bootcamp;
-
+package org.academiadecodigo.bootcamp.Server;
 public class Main {
 
     public static void main(String[] args) {

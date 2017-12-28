@@ -1,4 +1,4 @@
-package org.academiadecodigo.bootcamp;
+package org.academiadecodigo.bootcamp.Player;
 
 import java.io.BufferedReader;
 import java.io.IOException;

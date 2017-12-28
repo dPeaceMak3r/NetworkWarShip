@@ -1,4 +1,4 @@
-package org.academiadecodigo.bootcamp;
+package org.academiadecodigo.bootcamp.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,8 +11,6 @@ import java.util.concurrent.Executors;
 public class Server {
 
     private final static int PORT_NUMBER = 8080;
-    private final static int ROWS = 8;
-    private final static int COLS = 11;
     private Data[] playerData = new Data[2];
 
     public void serverStart(){
@@ -37,63 +35,18 @@ public class Server {
                 counter++;
                 if (counter == 2){
 
+                    clientHandlerThread.submit(new ServerHelper(playerData));
                     counter = 0;
-                    //clientHandlerThread.submit();
 
                 }
 
             }
-             
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
 
-    }
-
-    public class Data {
-
-        private Socket clientSocket;
-        private String name;
-        private String[][] grid = new String[ROWS][COLS];
-
-        public Data(Socket clientSocket, String[] data){
-
-            int index = 1;
-            this.clientSocket = clientSocket;
-            this.name = data[0];
-
-            for (int rows = 0; rows < ROWS; rows++) {
-
-                for (int cols = 0; cols < COLS; cols++) {
-
-                    grid[rows][cols] = data[index];
-                    index++;
-
-                }
-
-            }
-
-
-        }
-
-        public Socket getClientSocket() {
-            return clientSocket;
-        }
-
-        public String[][] getGrid() {
-            return grid;
-        }
-
-        public String getName() {
-
-            return name;
-
-        }
-
-        public void setGrid(String[][] grid) {
-            this.grid = grid;
-        }
     }
 
 }
