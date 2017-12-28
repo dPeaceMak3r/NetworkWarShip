@@ -140,6 +140,21 @@ public class Grid {
         }
 
     }
+
+
+    public void updateGrid(int x, int y){
+
+        if(grid[x][y].equals("-")){
+         grid[x][y] = "O";
+        }else{
+            grid[x][y] = "X";
+        }
+
+
+    }
+
+
+
 }
 
 /*
