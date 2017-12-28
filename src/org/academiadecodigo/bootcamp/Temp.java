@@ -2,7 +2,7 @@ package org.academiadecodigo.bootcamp;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Main {
+public class Temp {
 
 
     public static void main(String[] args) {
