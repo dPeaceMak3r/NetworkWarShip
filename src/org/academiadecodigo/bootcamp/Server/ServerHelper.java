@@ -86,10 +86,13 @@ public class ServerHelper implements Runnable {
     @Override
     public void run() {
 
+
+
         while (playerData[0].getClientSocket().isConnected() && playerData[1].getClientSocket().isConnected()){
 
             try {
-
+                PrintWriter unlockMessage = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
+                unlockMessage.print("/startGame");
                 String[] shots;
                 BufferedReader in = new BufferedReader(new InputStreamReader(playerData[counter].getClientSocket().getInputStream()));
                 shots = in.readLine().split(" ");

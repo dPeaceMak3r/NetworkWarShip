@@ -30,7 +30,16 @@ public class Server {
 
                 Socket clientSocket = serverSocket.accept();
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                inData = in.readLine().split(" ");
+
+                try {
+                    inData = in.readLine().split(" ");
+                }catch (NullPointerException e){
+                    System.out.println("Connection lost.");
+                    clientSocket.close();
+                    in.close();
+                    continue;
+                }
+
                 playerData[counter] = new Data(clientSocket, inData);
                 counter++;
                 if (counter == 2){
@@ -45,7 +54,6 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
 

@@ -5,5 +5,7 @@ public class Main {
 
         Server server = new Server();
 
+        server.serverStart();
+
     }
 }

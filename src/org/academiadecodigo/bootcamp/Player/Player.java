@@ -2,6 +2,8 @@ package org.academiadecodigo.bootcamp.Player;
 
 
 
+import org.academiadecodigo.bootcamp.Grid;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,31 +33,41 @@ public class Player {
             System.out.println("        ## What is your name? ##");
             System.out.println("===========================================");
             String name=buffer.readLine();
-            output.println(name);
-
-            //This is a test to clear the console
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
+            //output.println(name);
 
             //It now call the method that handles the put of the ships in the grid
             PlayerGrid playerGrid=new PlayerGrid();
-            //playerGrid.shipsGrid();
+            playerGrid.shipsGrid();
 
             //Loads the grid
             grid=playerGrid.getGrid();
 
+            //Now this is responsible for updating the grid and drawing
+            Grid updateGrid = new Grid();
+            updateGrid.createGrid(grid);
+
             //Now sends the grid to the server
-            //WEAK SPOT, MAY NOT WORK WITH A MATRIX
-            output.println(grid);
+            //turns the grid into an unique string
+            String sendGrid="";
+            for(int i=0;i<PlayerGrid.ROWS;i++){
+                for(int j=0;j<PlayerGrid.COLUMNS;j++){
+                    sendGrid=sendGrid+" "+grid[i][j];
+                }
+            }
+
+            output.println(name+sendGrid);
 
             //Then, it creates a new thread in the client helper to receive the messages
             //This will be created with the Executor Frame Work
             ExecutorService cachedPool = Executors.newCachedThreadPool();
-            cachedPool.submit(new PlayerHelper(playerSocket));
+            cachedPool.submit(new PlayerHelper(playerSocket,name,grid));
 
             //Creates a PlayerHelper for the use of standby method
             PlayerHelper helper=new PlayerHelper();
 
+            System.out.println("Waiting for a new player.");
+
+            helper.standby();
 
             while (playerSocket.isBound()){
 

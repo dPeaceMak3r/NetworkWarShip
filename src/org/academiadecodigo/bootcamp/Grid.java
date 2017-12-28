@@ -10,14 +10,19 @@ public class Grid {
     public static int COLS = 11;
 
 
-    String[][] grid = new String[ROWS][COLS];
+    private String[][] grid = new String[ROWS][COLS];
 
 
-    public void createGrid() {
+    public void createGrid( String [][] playerGrid) {
 
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                grid[i][j] = " - ";
+                if(playerGrid[i][j]!=null){
+                    grid[i][j]=playerGrid[i][j];
+                }else{
+                    grid[i][j] = " - ";
+
+                }
             }
         }
     }
@@ -27,8 +32,10 @@ public class Grid {
 
         boolean printR = true;
 
+        System.out.print("   ");
 
-        for (int i = 0; i <= COLS; i++) {
+
+        for (int i = 0; i < COLS; i++) {
             if (i > 10) {
                 System.out.print(i + " ");
             } else {
@@ -38,7 +45,7 @@ public class Grid {
         }
         System.out.println();
 
-        int r = 1;
+        int r = 0;
 
         for (int i = 0; i < ROWS; i++) {
 
@@ -60,15 +67,6 @@ public class Grid {
 
     }
 
-    public static void main(String[] args) {
-
-        Grid g = new Grid();
-        g.createGrid();
-        g.showGrid();
-
-
-        g.placeShips();
-    }
 
 
     public void placeShips() {
@@ -145,7 +143,7 @@ public class Grid {
     public void updateGrid(int x, int y){
 
         if(grid[x][y].equals("-")){
-         grid[x][y] = "O";
+            grid[x][y] = "O";
         }else{
             grid[x][y] = "X";
         }
