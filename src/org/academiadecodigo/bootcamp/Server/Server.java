@@ -15,7 +15,7 @@ public class Server {
     private final static int COLS = 11;
     private Data[] playerData = new Data[2];
 
-    public void start(){
+    public void serverStart(){
         int counter = 0;
         String[] inData;
 
@@ -38,12 +38,12 @@ public class Server {
                 if (counter == 2){
 
                     counter = 0;
+                    //clientHandlerThread.submit();
 
                 }
 
             }
-
-
+             
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,14 +51,11 @@ public class Server {
 
     }
 
-
-
     public class Data {
 
         private Socket clientSocket;
         private String name;
-        private String[][] grid;
-
+        private String[][] grid = new String[ROWS][COLS];
 
         public Data(Socket clientSocket, String[] data){
 
@@ -80,6 +77,13 @@ public class Server {
 
         }
 
+        public Socket getClientSocket() {
+            return clientSocket;
+        }
+
+        public String[][] getGrid() {
+            return grid;
+        }
 
         public String getName() {
 
@@ -87,6 +91,9 @@ public class Server {
 
         }
 
+        public void setGrid(String[][] grid) {
+            this.grid = grid;
+        }
     }
 
 }
