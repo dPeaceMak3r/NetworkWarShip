@@ -86,16 +86,23 @@ public class ServerHelper implements Runnable {
     @Override
     public void run() {
 
-
+        int firstRun=0;
 
         while (playerData[0].getClientSocket().isConnected() && playerData[1].getClientSocket().isConnected()){
 
             System.out.println("First entry");
 
             try {
-                PrintWriter unlockMessage = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
-                System.out.println("message unlock");
-                unlockMessage.print("/startGame");
+
+                System.out.println("first run: "+firstRun);
+
+                if(firstRun<2){
+                    PrintWriter unlockMessage = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
+                    System.out.println("message unlock" + counter);
+                    unlockMessage.println("/startGame");
+                    firstRun++;
+                }
+
                 String[] shots;
                 BufferedReader in = new BufferedReader(new InputStreamReader(playerData[counter].getClientSocket().getInputStream()));
                 shots = in.readLine().split(" ");

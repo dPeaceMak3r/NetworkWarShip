@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Player {
 
@@ -60,14 +61,16 @@ public class Player {
             //Then, it creates a new thread in the client helper to receive the messages
             //This will be created with the Executor Frame Work
             ExecutorService cachedPool = Executors.newCachedThreadPool();
-            cachedPool.submit(new PlayerHelper(playerSocket,name,grid));
+            PlayerHelper helper=new PlayerHelper(playerSocket,name,grid);
+            cachedPool.submit(helper);
 
             //Creates a PlayerHelper for the use of standby method
-            PlayerHelper helper=new PlayerHelper();
 
             System.out.println("Waiting for a new player.");
 
             helper.standby();
+
+            System.out.println("Exited standby");
 
             while (playerSocket.isBound()){
 
@@ -81,7 +84,7 @@ public class Player {
                     System.out.println("===========================================");
                     String []tryShots=buffer.readLine().split(" ");
 
-                    hitGrid[0][0]=true;
+                    //hitGrid[0][0]=true;
 
                     //Now it needs to check if the input coordinates were inside the grid, or was already said
                     if(checkCoordinates(tryShots,hitGrid)){
@@ -127,6 +130,7 @@ public class Player {
                 output.println(shots);
 
                 //Calls the standby method, so it gets on pause until the opponent makes he's play
+                helper.setSignal();
                 helper.standby();
 
 
@@ -147,6 +151,7 @@ public class Player {
 
         //First we test to see if the given coordinates were inside the grid
         if(Integer.parseInt(tryShots[0])>PlayerGrid.ROWS ||Integer.parseInt(tryShots[1])>PlayerGrid.COLUMNS ){
+            System.out.println(Integer.parseInt(tryShots[0])+" "+Integer.parseInt(tryShots[1]));
             System.out.println("The given coordinates are out of the grid. Please put new ones");
             return false;
         }

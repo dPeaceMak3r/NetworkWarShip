@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 public class PlayerHelper implements Runnable {
 
@@ -14,13 +15,11 @@ public class PlayerHelper implements Runnable {
     private String[][]playerGrid;
     private String name;
     private Grid updatedGrid;
-    private boolean signal;
+    private volatile boolean signal;
 
-    //Used to override when synchronizing the threads
-    public PlayerHelper(){}
 
     public PlayerHelper(Socket clientSocket, String name, String [][] playerGrid){
-        this.playerSocket=playerSocket;
+        this.playerSocket=clientSocket;
         this.name=name;
         this.playerGrid=playerGrid;
     }
@@ -28,36 +27,43 @@ public class PlayerHelper implements Runnable {
     @Override
     public void run() {
 
+        System.out.println("Socket in PlayerHelper: "+playerSocket.isBound());
+        System.out.println("Socket in PlayerHelper: "+playerSocket.isConnected());
+
         //Defines the input
         while(playerSocket.isBound()){
+
+            System.out.println("ENTERED HERE");
+
             try {
 
-                BufferedReader input;
+                System.out.println("Waiting for the input.");
+                BufferedReader input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
 
                 String [] message=null;
                 String instruction="";
 
                 System.out.println("TEste");
 
-                synchronized (this){
-                    input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
 
                     //I HAVE TO SEE THIS BETTER
                     //condition to unlock the player
 
-                    instruction=input.readLine();
+                instruction=input.readLine();
 
-                    System.out.println(instruction);
+                System.out.println(instruction);
 
-                    if(instruction == "/startGame"){
-                        System.out.println("You can now play.");
-                        notifyAll();
-                        signal=true;
-                    }else{
-                        message= instruction.split("");
+                if(instruction.equals("/startGame")){
 
-                    }
+                    System.out.println("You can now play.");
+                    signal=true;
+
+                }else {
+                    message = instruction.split("");
+                    signal=true;
+
                 }
+
 
 
                 //The player receives 2 messages. One telling where the fires he shot landed.
@@ -84,10 +90,11 @@ public class PlayerHelper implements Runnable {
 
 
                 //Notify the player, after the opponent has made a move
-                synchronized (this){
+                /*synchronized (this){
                     notify();
 
                 }
+                */
 
                 if(message!=null){
                     System.out.println(message);
@@ -102,21 +109,24 @@ public class PlayerHelper implements Runnable {
 
     }
 
-    public synchronized void standby(){
 
+    public void standby(){
 
         while(!signal){
             try {
-                wait();
+                TimeUnit.MILLISECONDS.sleep(200);
             } catch (InterruptedException e) {
-                System.err.println("Thread locked.");
+                System.err.println("Not enough time.");
             }
-        }
 
+        }
 
     }
 
-
+  //SETTER
+    public void setSignal(){
+        this.signal=!signal;
+    }
 
 
 }
