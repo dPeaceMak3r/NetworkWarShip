@@ -45,6 +45,7 @@ public class Server {
                 if (counter == 2){
 
                     clientHandlerThread.submit(new ServerHelper(playerData));
+                    System.out.println("Server in.");
                     counter = 0;
 
                 }

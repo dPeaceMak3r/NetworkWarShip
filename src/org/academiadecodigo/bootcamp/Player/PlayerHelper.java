@@ -14,6 +14,7 @@ public class PlayerHelper implements Runnable {
     private String[][]playerGrid;
     private String name;
     private Grid updatedGrid;
+    private boolean signal;
 
     //Used to override when synchronizing the threads
     public PlayerHelper(){}
@@ -36,6 +37,8 @@ public class PlayerHelper implements Runnable {
                 String [] message=null;
                 String instruction="";
 
+                System.out.println("TEste");
+
                 synchronized (this){
                     input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
 
@@ -43,9 +46,13 @@ public class PlayerHelper implements Runnable {
                     //condition to unlock the player
 
                     instruction=input.readLine();
+
+                    System.out.println(instruction);
+
                     if(instruction == "/startGame"){
                         System.out.println("You can now play.");
                         notifyAll();
+                        signal=true;
                     }else{
                         message= instruction.split("");
 
@@ -96,11 +103,17 @@ public class PlayerHelper implements Runnable {
     }
 
     public synchronized void standby(){
-        try {
-            wait();
-        } catch (InterruptedException e) {
-            System.err.println("Thread locked.");
+
+
+        while(!signal){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                System.err.println("Thread locked.");
+            }
         }
+
+
     }
 
 
