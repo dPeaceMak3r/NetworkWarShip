@@ -1,7 +1,5 @@
 package org.academiadecodigo.bootcamp.Player;
 
-import org.academiadecodigo.bootcamp.Grid;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -65,14 +63,13 @@ public class PlayerHelper implements Runnable {
                 //Break the message into an array
                 message=instruction.split(" ");
 
-                if(message[0].equals("/startGame") && gameStart==false){
+                if(message[0].equals("/startGame") && !gameStart){
                     System.out.println("You can now play.");
                     signal=true;
                     gameStart=true;
-
                 }
 
-                for (int i=0;i<message.length;i++){
+                for (int i=0; i <message.length;i++){
 
                     switch (message[i]){
                         case "/Shipshit":
@@ -109,6 +106,14 @@ public class PlayerHelper implements Runnable {
                                 signal=true;
                                 gameStart=true;
                             }
+                            break;
+                        case "/GameOver":
+                            String printMessage="";
+                            for(int j=0;j<message.length;j++){
+                                printMessage=printMessage+" "+message[j];
+                            }
+
+                            System.out.println(printMessage);
                             break;
                         default:
                             break;

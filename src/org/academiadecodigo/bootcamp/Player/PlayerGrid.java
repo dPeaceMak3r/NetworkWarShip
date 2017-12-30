@@ -1,12 +1,8 @@
 package org.academiadecodigo.bootcamp.Player;
 
-import org.academiadecodigo.bootcamp.Grid;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.Buffer;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayerGrid {
 
@@ -23,11 +19,11 @@ public class PlayerGrid {
 
         this.drawGrid=new Grid();
 
-        inputCoordinates(buffer, "Carrier"," Ca",5);
-        //inputCoordinates(buffer, "Battleship"," Ba",4);
-        //inputCoordinates(buffer,"Cruiser"," Cr",3);
-        //inputCoordinates(buffer,"Submarine"," Su",3);
-        //inputCoordinates(buffer, "Destroyer"," De",2);
+        inputCoordinates(buffer, "Carrier","Ca",5);
+        inputCoordinates(buffer, "Battleship"," Ba",4);
+        inputCoordinates(buffer,"Cruiser"," Cr",3);
+        inputCoordinates(buffer,"Submarine"," Su",3);
+        inputCoordinates(buffer, "Destroyer"," De",2);
 
 
 
@@ -83,13 +79,19 @@ public class PlayerGrid {
     private boolean checkFirstCoordinates(String [] position, String shipType){
         //It checks if the characters typed are numbers
         try{
+
+            //Checks if there are exactly two coordinates
+            if(position.length!=2){
+                System.out.println("Invalid input, try again");
+                return false;
+            }
+
             Integer.parseInt(position[0]);
             Integer.parseInt(position[1]);
         }catch (NumberFormatException e){
             System.out.println("Not a valid number, introduce a number.");
             return false;
         }
-
 
 
         //To check if the coordinates given belong to the grid
@@ -118,6 +120,13 @@ public class PlayerGrid {
 
         //It checks if the characters typed are numbers
         try{
+
+            //Checks if there are exactly two coordinates
+            if(secondPosition.length!=2){
+                System.out.println("Invalid input, try again");
+                return false;
+            }
+
             Integer.parseInt(firstPosition[0]);
             Integer.parseInt(firstPosition[1]);
             Integer.parseInt(secondPosition[0]);
@@ -132,6 +141,7 @@ public class PlayerGrid {
             System.out.println("Those coordinates are out of bound. Please choose new ones.");
             return false;
         }
+
 
         //Now it has to check if the coordinates given are the exact same number of holes between the first coordinates
         int firstRow=Integer.parseInt(firstPosition[0]);
@@ -210,7 +220,7 @@ public class PlayerGrid {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 if(playerGrid[i][j]!=null){
-                    interfaceGrid[i][j]=playerGrid[i][j];
+                    interfaceGrid[i][j]=" "+playerGrid[i][j];
                 }else{
                     interfaceGrid[i][j] = " - ";
 

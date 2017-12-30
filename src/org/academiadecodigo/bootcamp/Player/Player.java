@@ -2,8 +2,6 @@ package org.academiadecodigo.bootcamp.Player;
 
 
 
-import org.academiadecodigo.bootcamp.Grid;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,7 +9,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class Player {
 
@@ -80,7 +77,7 @@ public class Player {
                     //This handles the introduction of the shots to be fired
                     System.out.println("===========================================");
                     System.out.println("        First shot");
-                    System.out.println("  Rows(0-8); Columns(0-11)");
+                    System.out.println("  Rows(0-7); Columns(0-10)");
                     System.out.println("===========================================");
                     String []tryShots=buffer.readLine().split(" ");
 
@@ -98,7 +95,7 @@ public class Player {
                     //This handles the introduction of the shots to be fired
                     System.out.println("===========================================");
                     System.out.println("        Second shot");
-                    System.out.println("  Rows(0-8); Columns(0-11)");
+                    System.out.println("  Rows(0-7); Columns(0-10)");
                     System.out.println("===========================================");
                     String []tryShots=buffer.readLine().split(" ");
 
@@ -114,7 +111,7 @@ public class Player {
                     //This handles the introduction of the shots to be fired
                     System.out.println("===========================================");
                     System.out.println("        Third shot");
-                    System.out.println("  Rows(0-8); Columns(0-11)");
+                    System.out.println("  Rows(0-7); Columns(0-10)");
                     System.out.println("===========================================");
                     String []tryShots=buffer.readLine().split(" ");
 
@@ -150,8 +147,14 @@ public class Player {
 
     public static boolean checkCoordinates(String [] tryShots, boolean [][] hitGrid){
 
+        //Checks if there are exactly two coordinates
+        if(tryShots.length!=2){
+            System.out.println("Invalid input, try again");
+            return false;
+        }
+
         //First we test to see if the given coordinates were inside the grid
-        if(Integer.parseInt(tryShots[0])>PlayerGrid.ROWS ||Integer.parseInt(tryShots[1])>PlayerGrid.COLUMNS ){
+        if(Integer.parseInt(tryShots[0])>=PlayerGrid.ROWS ||Integer.parseInt(tryShots[1])>=PlayerGrid.COLUMNS ){
             System.out.println(Integer.parseInt(tryShots[0])+" "+Integer.parseInt(tryShots[1]));
             System.out.println("The given coordinates are out of the grid. Please put new ones");
             return false;

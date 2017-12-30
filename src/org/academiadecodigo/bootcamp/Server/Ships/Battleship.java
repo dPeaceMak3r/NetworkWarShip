@@ -1,6 +1,6 @@
-package org.academiadecodigo.bootcamp;
+package org.academiadecodigo.bootcamp.Server.Ships;
 
-public class Battleship extends Ship{
+public class Battleship extends Ship {
 
 
 

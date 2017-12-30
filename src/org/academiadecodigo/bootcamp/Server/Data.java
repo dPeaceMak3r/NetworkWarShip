@@ -1,7 +1,7 @@
 package org.academiadecodigo.bootcamp.Server;
 
-import org.academiadecodigo.bootcamp.Ship;
-import org.academiadecodigo.bootcamp.ShipFactory;
+import org.academiadecodigo.bootcamp.Server.Ships.Ship;
+import org.academiadecodigo.bootcamp.Server.Ships.ShipFactory;
 
 import java.net.Socket;
 import java.util.concurrent.CopyOnWriteArrayList;

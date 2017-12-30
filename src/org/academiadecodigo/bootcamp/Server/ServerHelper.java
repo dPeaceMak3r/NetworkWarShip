@@ -7,8 +7,9 @@ public class ServerHelper implements Runnable {
     private Data[] playerData;
     private int counter = 0;
     private int miss = 0;
-    private String shipsDestroyed="0";
-    private String shipsHit="0";
+    private int shipsDestroyed=0;
+    private int shipsHit=0;
+    private boolean gameOver;
 
 
     public ServerHelper(Data[] playerData){
@@ -20,58 +21,58 @@ public class ServerHelper implements Runnable {
     public void gameLogic(String[] shots){
 
         miss = 0;
-        shipsDestroyed="0";
-        shipsHit="0";
+        shipsDestroyed=0;
+        shipsHit=0;
 
         for (int i=0;i<shots.length;i+=2){
 
             int firstShot=Integer.parseInt(shots[i]);
             int secondShot=Integer.parseInt(shots[i+1]);
 
-            if (playerData[counter].getGrid()[firstShot][secondShot] != null){
+            System.out.println(playerData[counter].getGrid()[firstShot][secondShot]);
+
+            if (!playerData[counter].getGrid()[firstShot][secondShot].equals("null")){
 
 
                 //Switch for the type of ships
                 switch (playerData[counter].getGrid()[firstShot][secondShot]){
                     case "Ca":
                         playerData[counter].getShipList().get(0).hit();
-                        shipsHit=shipsHit+" "+"Carrier hit";
+                        shipsHit++;
                         if(playerData[counter].getShipList().get(0).isDestroyed()){
-                            shipsDestroyed=shipsDestroyed+" "+playerData[counter].getShipList().get(0).getMessage();
+                            shipsDestroyed++;
                         }
                         break;
                     case "Ba":
                         playerData[counter].getShipList().get(1).hit();
-                        shipsHit=shipsHit+" "+"Battleship hit";
+                        shipsHit++;
                         if(playerData[counter].getShipList().get(1).isDestroyed()){
-                            shipsDestroyed=shipsDestroyed+" "+playerData[counter].getShipList().get(1).getMessage();
+                            shipsDestroyed++;
                         }
                         break;
                     case "Cr":
                         playerData[counter].getShipList().get(2).hit();
-                        shipsHit=shipsHit+" "+"Cruiser hit";
+                        shipsHit++;
                         if(playerData[counter].getShipList().get(2).isDestroyed()){
-                            shipsDestroyed=shipsDestroyed+" "+playerData[counter].getShipList().get(2).getMessage();
+                            shipsDestroyed++;
                         }
                         break;
                     case "Su":
                         playerData[counter].getShipList().get(3).hit();
-                        shipsHit=shipsHit+" "+"Submarine hit";
+                        shipsHit++;
                         if(playerData[counter].getShipList().get(3).isDestroyed()){
-                            shipsDestroyed=shipsDestroyed+" "+playerData[counter].getShipList().get(3).getMessage();
+                            shipsDestroyed++;
                         }
                         break;
                     case "De":
                         playerData[counter].getShipList().get(4).hit();
-                        shipsHit=shipsHit+" "+"Destroyer hit";
+                        shipsHit++;
                         if(playerData[counter].getShipList().get(4).isDestroyed()){
-                            shipsDestroyed=shipsDestroyed+" "+playerData[counter].getShipList().get(4).getMessage();
+                            shipsDestroyed++;
                         }
                         break;
 
                 }
-
-                //playerData[counter].getGrid()[][]
 
             }else{
 
@@ -79,6 +80,17 @@ public class ServerHelper implements Runnable {
 
             }
 
+        }
+
+        //Check if all ships are destroyed
+        for (int i=0; i<5;i++){
+            if(!playerData[counter].getShipList().get(i).isDestroyed()){
+                break;
+            }
+
+            if(i==4){
+                gameOver=true;
+            }
         }
 
 
@@ -121,11 +133,6 @@ public class ServerHelper implements Runnable {
 
                     sendMessage(shots);
 
-
-
-
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -140,17 +147,13 @@ public class ServerHelper implements Runnable {
         String message="";
 
 
-
-
         try {
 
             //Message to the player that got attacked
-            //for (int i = 0; i < playerData.length; i++) {
-            //PrintWriter out = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
             if (miss < 3){
 
                 //This happens when one of the ships was destroyed
-                if(!shipsDestroyed.equals("")){
+                if(shipsDestroyed!=0){
                     message = "/Shipsdestroyed "+shipsDestroyed;
                 }
 
@@ -176,12 +179,34 @@ public class ServerHelper implements Runnable {
             changeCounter();
             nameCode="/"+playerData[counter].getName();
             changeCounter();
-            for (int i=0; i<2;i++){
+
+
+            if(gameOver==true){
+
+                String endMessage = "You lost the game";
 
                 PrintWriter out = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
-                out.println(nameCode+" "+message+" /startGame");
+                out.println("/GameOver "+endMessage);
                 changeCounter();
+                endMessage = "You won the game";
+                out = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
+                out.println("/GameOver "+endMessage);
+
+                playerData[counter].getClientSocket().close();
+                changeCounter();
+                playerData[counter].getClientSocket().close();
+                out.close();
+            }else{
+                for (int i=0; i<2;i++){
+
+                    PrintWriter out = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
+                    out.println(nameCode+" "+message+" /startGame");
+                    changeCounter();
+                }
             }
+
+
+
 
 
 
@@ -190,6 +215,7 @@ public class ServerHelper implements Runnable {
         }
 
     }
+
 
     private void changeCounter(){
 
