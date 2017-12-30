@@ -7,8 +7,9 @@ public class ServerHelper implements Runnable {
     private Data[] playerData;
     private int counter = 0;
     private int miss = 0;
-    private String shipsDestroyed="";
-    private String shipsHit="";
+    private String shipsDestroyed="0";
+    private String shipsHit="0";
+
 
     public ServerHelper(Data[] playerData){
 
@@ -19,8 +20,8 @@ public class ServerHelper implements Runnable {
     public void gameLogic(String[] shots){
 
         miss = 0;
-        shipsDestroyed="";
-        shipsHit="";
+        shipsDestroyed="0";
+        shipsHit="0";
 
         for (int i=0;i<shots.length;i+=2){
 
@@ -28,6 +29,7 @@ public class ServerHelper implements Runnable {
             int secondShot=Integer.parseInt(shots[i+1]);
 
             if (playerData[counter].getGrid()[firstShot][secondShot] != null){
+
 
                 //Switch for the type of ships
                 switch (playerData[counter].getGrid()[firstShot][secondShot]){
@@ -134,13 +136,17 @@ public class ServerHelper implements Runnable {
 
     public synchronized void sendMessage(String [] shots){
 
+        String nameCode;
         String message="";
+
+
+
 
         try {
 
             //Message to the player that got attacked
-            for (int i = 0; i < playerData.length; i++) {
-            PrintWriter out = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
+            //for (int i = 0; i < playerData.length; i++) {
+            //PrintWriter out = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
             if (miss < 3){
 
                 //This happens when one of the ships was destroyed
@@ -153,7 +159,7 @@ public class ServerHelper implements Runnable {
 
             }
 
-            message = message + (" /Shotshit " + (3-miss));
+            message = message + (" /Shotsmiss " + miss);
 
             String sendShots=shots[0];
             for (int j=1; j<shots.length;j++){
@@ -164,10 +170,20 @@ public class ServerHelper implements Runnable {
 
             message = message + " /shots "+sendShots;
 
-            out.print(message);
-            out.flush();
 
+
+            //}
+            changeCounter();
+            nameCode="/"+playerData[counter].getName();
+            changeCounter();
+            for (int i=0; i<2;i++){
+
+                PrintWriter out = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
+                out.println(nameCode+" "+message+" /startGame");
+                changeCounter();
             }
+
+
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -16,6 +16,7 @@ public class PlayerHelper implements Runnable {
     private String name;
     private Grid updatedGrid;
     private volatile boolean signal;
+    private volatile boolean gameStart=false;
 
 
 
@@ -41,23 +42,82 @@ public class PlayerHelper implements Runnable {
 
                 String [] message=null;
                 String receive;
-                String instruction="";
+                String instruction=input.readLine();
+                System.out.println("INSTRUCTION: "+instruction);
 
+                /*
                 while ((receive=input.readLine()) != null){ ///////
 
                     instruction = instruction + receive;
 
                 }
+                */
 
-                System.out.println(instruction);
 
 
-                if(instruction.contains("/startGame") ){
+                //if(instruction.contains("/startGame") ){
 
+
+
+                //}
+
+
+                //Break the message into an array
+                message=instruction.split(" ");
+
+                if(message[0].equals("/startGame") && gameStart==false){
                     System.out.println("You can now play.");
                     signal=true;
+                    gameStart=true;
 
                 }
+
+                for (int i=0;i<message.length;i++){
+
+                    switch (message[i]){
+                        case "/Shipshit":
+                            System.out.println("Ships Hit: "+message[i+1]);
+                            break;
+                        case "/Shotsmiss":
+                            System.out.println("Shots Miss: "+message[i+1]);
+                            break;
+                        case "/Shipsdestroyed":
+                            System.out.println("Ships Destroyed: "+message[i+1]);
+                            break;
+                        case "/shots":
+                            if(!message[0].equals("/"+name)){
+                                for (int j=1; j<=6;j+=2){
+
+                                    int first=Integer.parseInt(message[i+j]);
+                                    int second = Integer.parseInt(message[i+j+1]);
+                                    playerGrid.updateGrid(first,second);
+
+
+
+                                }
+
+                                playerGrid.showGrid();
+
+                                System.out.println("Show the signal.");
+
+                                signal=true;
+                            }
+
+                            break;
+                        case "/startGame":
+                            if(i!=0 && gameStart==false){
+                                signal=true;
+                                gameStart=true;
+                            }
+                            break;
+                        default:
+                            break;
+
+                    }
+
+                }
+
+                /*
 
                 if(instruction!=null){
 
@@ -122,6 +182,8 @@ public class PlayerHelper implements Runnable {
                     signal=true;
 
                 }
+
+                */
 
 
             } catch (IOException e) {
