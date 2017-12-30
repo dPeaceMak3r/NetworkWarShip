@@ -9,23 +9,20 @@ public class PlayerGrid {
     public static final int ROWS=8;
     public static final int COLUMNS =11;
     private final String [][] grid=new String[ROWS][COLUMNS];
+    private final String [][] hitGrid=new String[ROWS][COLUMNS];
     private final String [][] interfaceGrid=new String[ROWS][COLUMNS];
-    private Grid drawGrid;
 
     public void shipsGrid(){
 
         //This is to read from the terminal
         BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
 
-        this.drawGrid=new Grid();
 
         inputCoordinates(buffer, "Carrier","Ca",5);
-        inputCoordinates(buffer, "Battleship"," Ba",4);
-        inputCoordinates(buffer,"Cruiser"," Cr",3);
-        inputCoordinates(buffer,"Submarine"," Su",3);
-        inputCoordinates(buffer, "Destroyer"," De",2);
-
-
+        inputCoordinates(buffer, "Battleship","Ba",4);
+        inputCoordinates(buffer,"Cruiser","Cr",3);
+        inputCoordinates(buffer,"Submarine","Su",3);
+        inputCoordinates(buffer, "Destroyer","De",2);
 
 
     }
@@ -68,6 +65,7 @@ public class PlayerGrid {
 
 
             }
+
 
 
         } catch (IOException e) {

@@ -154,7 +154,7 @@ public class ServerHelper implements Runnable {
 
                 //This happens when one of the ships was destroyed
                 if(shipsDestroyed!=0){
-                    message = "/Shipsdestroyed "+shipsDestroyed;
+                    message = " /Shipsdestroyed "+shipsDestroyed;
                 }
 
                 //Message for the ships hit
@@ -200,7 +200,7 @@ public class ServerHelper implements Runnable {
                 for (int i=0; i<2;i++){
 
                     PrintWriter out = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
-                    out.println(nameCode+" "+message+" /startGame");
+                    out.println(nameCode+message+" /startGame");
                     changeCounter();
                 }
             }

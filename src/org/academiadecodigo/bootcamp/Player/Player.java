@@ -12,10 +12,12 @@ import java.util.concurrent.Executors;
 
 public class Player {
 
+
+
     public static synchronized void main(String[] args) {
 
         String [][] grid=null;
-        boolean [][]hitGrid = new boolean[PlayerGrid.ROWS][PlayerGrid.COLUMNS];
+        boolean [][]hitGrid = new boolean [PlayerGrid.ROWS][PlayerGrid.COLUMNS];
 
         try {
             Socket playerSocket = new Socket("localhost",8080);
@@ -26,12 +28,18 @@ public class Player {
             //This is to read from the terminal
             BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
 
+            //Init the sound library
+            SoundEffect sound = new SoundEffect();
+            sound.soundInit();
+
+            //Start the theme game music
+            sound.playTheme();
+
             //This handles the name of the client
             System.out.println("===========================================");
             System.out.println("        ## What is your name? ##");
             System.out.println("===========================================");
-            String name=buffer.readLine();
-            //output.println(name);
+            String name=buffer.readLine().toLowerCase();
 
             //It now call the method that handles the put of the ships in the grid
             PlayerGrid playerGrid=new PlayerGrid();
@@ -71,6 +79,7 @@ public class Player {
 
 
                 System.out.println("Exited standby");
+
 
                 String shots;
                 while(true){

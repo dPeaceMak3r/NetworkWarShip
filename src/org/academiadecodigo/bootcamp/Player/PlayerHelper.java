@@ -11,10 +11,11 @@ public class PlayerHelper implements Runnable {
 
     private Socket playerSocket;
     private PlayerGrid playerGrid;
+    private PlayerGrid playerHitGrid;
     private String name;
-    private Grid updatedGrid;
     private volatile boolean signal;
     private volatile boolean gameStart=false;
+    private SoundEffect sound;
 
 
 
@@ -23,7 +24,8 @@ public class PlayerHelper implements Runnable {
         this.playerSocket=clientSocket;
         this.name=name;
         this.playerGrid=playerGrid;
-        this.updatedGrid=new Grid();
+        this.playerHitGrid=new PlayerGrid();
+        playerHitGrid.createGrid(new String[PlayerGrid.ROWS][PlayerGrid.COLUMNS]);
     }
 
     @Override
@@ -98,6 +100,23 @@ public class PlayerHelper implements Runnable {
                                 System.out.println("Show the signal.");
 
                                 signal=true;
+                            }else{
+
+                                for (int j=1; j<=6;j+=2){
+
+                                    int first=Integer.parseInt(message[i+j]);
+                                    int second = Integer.parseInt(message[i+j+1]);
+                                    playerHitGrid.updateGrid(first,second);
+
+
+
+                                }
+
+                                System.out.println("===========================================");
+                                System.out.println("        Shots Fired");
+                                System.out.println("===========================================");
+
+                                playerHitGrid.showGrid();
                             }
 
                             break;
