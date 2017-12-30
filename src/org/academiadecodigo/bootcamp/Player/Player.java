@@ -32,6 +32,16 @@ public class Player {
             SoundEffect sound = new SoundEffect();
             sound.soundInit();
 
+            System.out.println(" ######                                       #####                  ");
+            System.out.println("#     #   ##   ##### ##### #      ######    #     # #    # # #####  ");
+            System.out.println("#     #  #  #    #     #   #      #         #       #    # # #    # ");
+            System.out.println("######  #    #   #     #   #      #####      #####  ###### # #    # ");
+            System.out.println("#     # ######   #     #   #      #               # #    # # #####  ");
+            System.out.println("#     # #    #   #     #   #      #         #     # #    # # #      ");
+            System.out.println("######  #    #   #     #   ###### ######     #####  #    # # #");
+            System.out.println();
+            System.out.println("                                                    v0.0.1");
+
             //Start the theme game music
             sound.playTheme();
 
@@ -47,9 +57,6 @@ public class Player {
 
             //Loads the grid
             grid=playerGrid.getGrid();
-
-            //Now this is responsible for updating the grid and drawing
-            //playerGrid.createGrid();
 
             //Now sends the grid to the server
             //turns the grid into an unique string
@@ -78,8 +85,6 @@ public class Player {
 
 
 
-                System.out.println("Exited standby");
-
 
                 String shots;
                 while(true){
@@ -90,7 +95,6 @@ public class Player {
                     System.out.println("===========================================");
                     String []tryShots=buffer.readLine().split(" ");
 
-                    //hitGrid[0][0]=true;
 
                     //Now it needs to check if the input coordinates were inside the grid, or was already said
                     if(checkCoordinates(tryShots,hitGrid)){

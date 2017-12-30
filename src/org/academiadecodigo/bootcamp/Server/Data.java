@@ -58,8 +58,5 @@ public class Data {
         return this.shipList;
     }
 
-    public void setGrid(String[][] grid) {
-        this.grid = grid;
-    }
 
 }

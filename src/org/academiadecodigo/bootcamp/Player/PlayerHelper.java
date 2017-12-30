@@ -15,9 +15,6 @@ public class PlayerHelper implements Runnable {
     private String name;
     private volatile boolean signal;
     private volatile boolean gameStart=false;
-    private SoundEffect sound;
-
-
 
     public PlayerHelper(Socket clientSocket, String name, PlayerGrid playerGrid){
 
@@ -41,25 +38,8 @@ public class PlayerHelper implements Runnable {
                 BufferedReader input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
 
                 String [] message=null;
-                String receive;
                 String instruction=input.readLine();
                 System.out.println("INSTRUCTION: "+instruction);
-
-                /*
-                while ((receive=input.readLine()) != null){ ///////
-
-                    instruction = instruction + receive;
-
-                }
-                */
-
-
-
-                //if(instruction.contains("/startGame") ){
-
-
-
-                //}
 
 
                 //Break the message into an array
@@ -141,73 +121,6 @@ public class PlayerHelper implements Runnable {
 
                 }
 
-                /*
-
-                if(instruction!=null){
-
-                    message = instruction.split(" ");
-                    String printMessage="";
-
-                    //System.out.println(instruction);
-                    //The player receives 2 messages. One telling where the fires he shot landed.
-                    //Another with the moves from the opponent, showing the where they hit
-                    //So, the server will send two types of message, each with their code.
-
-
-
-                    if(message[0].equals("/"+name)){
-                        //This is for the fires shooted by the player
-
-
-
-                        for(int i=0;i<message.length;i++){
-                            printMessage=printMessage+" "+message[i];
-                        }
-
-                        System.out.println(printMessage);
-
-                    }
-                    if(message[0].equals("/shots")){
-
-                        System.out.println(message[0]);
-                        System.out.println(message[1]);
-                        System.out.println(message[2]);
-                        System.out.println(message[3]);
-                        System.out.println(message[4]);
-                        System.out.println(message[5]);
-                        System.out.println(message[6]);
-
-                        //Print the grid of the player
-
-                        for (int i=1; i<=6;i+=2){
-
-                            int first=Integer.parseInt(message[i]);
-                            int second = Integer.parseInt(message[i+1]);
-                            playerGrid.updateGrid(first,second);
-
-                        }
-
-                        playerGrid.showGrid();
-
-                        System.out.println("Show the signal.");
-
-                    }
-                        if(!message[0].equals("/"+name) && !message[0].equals("/shots")){
-
-                        //When the message is the fires hit or missed
-
-                        for(int i=0;i<message.length;i++){
-                            printMessage=printMessage+" "+message[i];
-                        }
-                        System.out.println(printMessage);
-
-
-                    }
-                    signal=true;
-
-                }
-
-                */
 
 
             } catch (IOException e) {
