@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Grid {
 
-
+/*
     public static int ROWS = 8;
     public static int COLS = 11;
 
@@ -142,7 +142,7 @@ public class Grid {
 
     public void updateGrid(int x, int y){
 
-        if(grid[x][y].equals("-")){
+        if(grid[x][y].equals(" - ")){
             grid[x][y] = "O";
         }else{
             grid[x][y] = "X";
@@ -150,6 +150,9 @@ public class Grid {
 
 
     }
+
+
+
 
 
 
@@ -230,6 +233,5 @@ public class Grid {
         System.out.println("Direction: ");
         System.out.println(direction);
     }
-
-}
 */
+}

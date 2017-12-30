@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Player {
 
-    public static void main(String[] args) {
+    public static synchronized void main(String[] args) {
 
         String [][] grid=null;
         boolean [][]hitGrid = new boolean[PlayerGrid.ROWS][PlayerGrid.COLUMNS];
@@ -44,8 +44,7 @@ public class Player {
             grid=playerGrid.getGrid();
 
             //Now this is responsible for updating the grid and drawing
-            Grid updateGrid = new Grid();
-            updateGrid.createGrid(grid);
+            //playerGrid.createGrid();
 
             //Now sends the grid to the server
             //turns the grid into an unique string
@@ -61,7 +60,7 @@ public class Player {
             //Then, it creates a new thread in the client helper to receive the messages
             //This will be created with the Executor Frame Work
             ExecutorService cachedPool = Executors.newCachedThreadPool();
-            PlayerHelper helper=new PlayerHelper(playerSocket,name,grid);
+            PlayerHelper helper=new PlayerHelper(playerSocket,name,playerGrid);
             cachedPool.submit(helper);
 
             //Creates a PlayerHelper for the use of standby method
@@ -70,10 +69,11 @@ public class Player {
 
             helper.standby();
 
-            System.out.println("Exited standby");
-
             while (playerSocket.isBound()){
 
+
+
+                System.out.println("Exited standby");
 
                 String shots;
                 while(true){
@@ -139,6 +139,7 @@ public class Player {
 
             playerSocket.close();
             output.close();
+            buffer.close();
 
         } catch (IOException e) {
             System.err.println("It wasn't possible to establish a connection.");

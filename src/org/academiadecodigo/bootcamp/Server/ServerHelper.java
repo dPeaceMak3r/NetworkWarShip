@@ -84,7 +84,7 @@ public class ServerHelper implements Runnable {
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
 
         int firstRun=0;
 
@@ -97,26 +97,30 @@ public class ServerHelper implements Runnable {
                 System.out.println("first run: "+firstRun);
 
                 if(firstRun<2){
+                    System.out.println("Counter vslue: "+counter);
                     PrintWriter unlockMessage = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
                     System.out.println("message unlock" + counter);
                     unlockMessage.println("/startGame");
                     firstRun++;
-                }
-
-                String[] shots;
-                BufferedReader in = new BufferedReader(new InputStreamReader(playerData[counter].getClientSocket().getInputStream()));
-                shots = in.readLine().split(" ");
-
-                if (shots.equals(null)){
-
-                    playerData[counter].getClientSocket().close();
 
                 }
+                    String[] shots;
+                    BufferedReader in = new BufferedReader(new InputStreamReader(playerData[counter].getClientSocket().getInputStream()));
+                    shots = in.readLine().split(" ");
 
-                changeCounter();
-                gameLogic(shots);
+                    if (shots==null){
 
-                sendMessage(shots);
+                        playerData[counter].getClientSocket().close();
+
+                    }
+
+                    changeCounter();
+                    gameLogic(shots);
+
+                    sendMessage(shots);
+
+
+
 
 
 
@@ -128,49 +132,42 @@ public class ServerHelper implements Runnable {
 
     }
 
-    public void sendMessage(String [] shots){
+    public synchronized void sendMessage(String [] shots){
 
+        String message="";
 
         try {
 
             //Message to the player that got attacked
+            for (int i = 0; i < playerData.length; i++) {
             PrintWriter out = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
             if (miss < 3){
 
                 //This happens when one of the ships was destroyed
                 if(!shipsDestroyed.equals("")){
-                    out.println("Ships destroyed: "+shipsDestroyed);
+                    message = "/Shipsdestroyed "+shipsDestroyed;
                 }
 
                 //Message for the ships hit
-                out.println("Ships hit: "+shipsHit);
-
-            }
-            out.println("Number of ships hit: " + (3-miss));
-
-            //Send the shots so the opponent won't see them
-            out.println("/shots "+shots);
-
-
-            //Message to the player that attacked
-            changeCounter();
-            out = new PrintWriter(playerData[counter].getClientSocket().getOutputStream(), true);
-            if (miss < 3){
-
-                //This happens when one of the ships was destroyed
-                if(!shipsDestroyed.equals("")){
-                    out.println("Ships destroyed: "+shipsDestroyed);
-                }
-
-                //Message for the ships hit
-                out.println("Ships hit: "+shipsHit);
+                message = message +" /Shipshit "+shipsHit;
 
             }
 
-            out.println("Number of ships hit: " + (3-miss));
+            message = message + (" /Shotshit " + (3-miss));
 
-            //Last change counter
-            changeCounter();
+            String sendShots=shots[0];
+            for (int j=1; j<shots.length;j++){
+
+                sendShots=sendShots+" "+shots[j];
+
+            }
+
+            message = message + " /shots "+sendShots;
+
+            out.print(message);
+            out.flush();
+
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

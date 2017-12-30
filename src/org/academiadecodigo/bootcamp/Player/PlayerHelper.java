@@ -12,28 +12,27 @@ public class PlayerHelper implements Runnable {
 
 
     private Socket playerSocket;
-    private String[][]playerGrid;
+    private PlayerGrid playerGrid;
     private String name;
     private Grid updatedGrid;
     private volatile boolean signal;
 
 
-    public PlayerHelper(Socket clientSocket, String name, String [][] playerGrid){
+
+    public PlayerHelper(Socket clientSocket, String name, PlayerGrid playerGrid){
+
         this.playerSocket=clientSocket;
         this.name=name;
         this.playerGrid=playerGrid;
+        this.updatedGrid=new Grid();
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
 
-        System.out.println("Socket in PlayerHelper: "+playerSocket.isBound());
-        System.out.println("Socket in PlayerHelper: "+playerSocket.isConnected());
 
         //Defines the input
         while(playerSocket.isBound()){
-
-            System.out.println("ENTERED HERE");
 
             try {
 
@@ -41,63 +40,87 @@ public class PlayerHelper implements Runnable {
                 BufferedReader input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
 
                 String [] message=null;
+                String receive;
                 String instruction="";
 
-                System.out.println("TEste");
+                while ((receive=input.readLine()) != null){ ///////
 
+                    instruction = instruction + receive;
 
-                    //I HAVE TO SEE THIS BETTER
-                    //condition to unlock the player
-
-                instruction=input.readLine();
+                }
 
                 System.out.println(instruction);
 
-                if(instruction.equals("/startGame")){
+
+                if(instruction.contains("/startGame") ){
 
                     System.out.println("You can now play.");
                     signal=true;
 
-                }else {
-                    message = instruction.split("");
+                }
+
+                if(instruction!=null){
+
+                    message = instruction.split(" ");
+                    String printMessage="";
+
+                    //System.out.println(instruction);
+                    //The player receives 2 messages. One telling where the fires he shot landed.
+                    //Another with the moves from the opponent, showing the where they hit
+                    //So, the server will send two types of message, each with their code.
+
+
+
+                    if(message[0].equals("/"+name)){
+                        //This is for the fires shooted by the player
+
+
+
+                        for(int i=0;i<message.length;i++){
+                            printMessage=printMessage+" "+message[i];
+                        }
+
+                        System.out.println(printMessage);
+
+                    }
+                    if(message[0].equals("/shots")){
+
+                        System.out.println(message[0]);
+                        System.out.println(message[1]);
+                        System.out.println(message[2]);
+                        System.out.println(message[3]);
+                        System.out.println(message[4]);
+                        System.out.println(message[5]);
+                        System.out.println(message[6]);
+
+                        //Print the grid of the player
+
+                        for (int i=1; i<=6;i+=2){
+
+                            int first=Integer.parseInt(message[i]);
+                            int second = Integer.parseInt(message[i+1]);
+                            playerGrid.updateGrid(first,second);
+
+                        }
+
+                        playerGrid.showGrid();
+
+                        System.out.println("Show the signal.");
+
+                    }
+                        if(!message[0].equals("/"+name) && !message[0].equals("/shots")){
+
+                        //When the message is the fires hit or missed
+
+                        for(int i=0;i<message.length;i++){
+                            printMessage=printMessage+" "+message[i];
+                        }
+                        System.out.println(printMessage);
+
+
+                    }
                     signal=true;
 
-                }
-
-
-
-                //The player receives 2 messages. One telling where the fires he shot landed.
-                //Another with the moves from the opponent, showing the where they hit
-                //So, the server will send two types of message, each with their code.
-                if(message[0].equals("/"+name)){
-                    //This is for the fires shooted by the player
-                    System.out.println(message.toString());
-
-                }else{
-                    //Print the grid of the player
-                    for (int i=1; i<7;i+=2){
-                        updatedGrid.updateGrid(Integer.parseInt(message[i]),Integer.parseInt(message[i+1]));
-                    }
-
-                    updatedGrid.showGrid();
-                }
-
-
-
-
-
-
-
-
-                //Notify the player, after the opponent has made a move
-                /*synchronized (this){
-                    notify();
-
-                }
-                */
-
-                if(message!=null){
-                    System.out.println(message);
                 }
 
 

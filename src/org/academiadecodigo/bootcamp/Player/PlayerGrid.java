@@ -13,6 +13,7 @@ public class PlayerGrid {
     public static final int ROWS=8;
     public static final int COLUMNS =11;
     private final String [][] grid=new String[ROWS][COLUMNS];
+    private final String [][] interfaceGrid=new String[ROWS][COLUMNS];
     private Grid drawGrid;
 
     public void shipsGrid(){
@@ -60,8 +61,8 @@ public class PlayerGrid {
 
                 String [] secondPosition=buffer.readLine().split(" ");
                 if(checkSecondCoordinates(firstPosition,secondPosition,shipType,holes)){
-                    drawGrid.createGrid(grid);
-                    drawGrid.showGrid();
+                    createGrid(grid);
+                    showGrid();
                     break;
                 }else{
                     //To reset the grid, if the second coordinates were wrong
@@ -199,6 +200,70 @@ public class PlayerGrid {
         }else{
             System.out.println("The last coordinates are not right, please introduce new ones.");
             return false;
+        }
+
+
+    }
+
+    public void createGrid( String [][] playerGrid) {
+
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
+                if(playerGrid[i][j]!=null){
+                    interfaceGrid[i][j]=playerGrid[i][j];
+                }else{
+                    interfaceGrid[i][j] = " - ";
+
+                }
+            }
+        }
+    }
+
+    public void showGrid() {
+
+        boolean printR = true;
+
+        System.out.print("   ");
+
+
+        for (int i = 0; i < COLUMNS; i++) {
+            if (i > 10) {
+                System.out.print(i + " ");
+            } else {
+                System.out.print(" " + i + " ");
+            }
+
+        }
+        System.out.println();
+
+        int r = 0;
+
+        for (int i = 0; i < ROWS; i++) {
+
+
+            for (int j = 0; j < COLUMNS; j++) {
+
+                if (printR) {
+                    System.out.print(" " + r + " ");
+                }
+                printR = false;
+                System.out.print(interfaceGrid[i][j]);
+            }
+            System.out.println();
+            printR = true;
+            r++;
+
+        }
+
+
+    }
+
+    public void updateGrid(int x, int y){
+
+        if(interfaceGrid[x][y].equals(" - ")){
+            interfaceGrid[x][y] = " O ";
+        }else{
+            interfaceGrid[x][y] = " X ";
         }
 
 
