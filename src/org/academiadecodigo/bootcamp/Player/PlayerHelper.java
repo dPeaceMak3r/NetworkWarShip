@@ -39,7 +39,7 @@ public class PlayerHelper implements Runnable {
 
                 String [] message=null;
                 String instruction=input.readLine();
-                System.out.println("INSTRUCTION: "+instruction);
+                //System.out.println("INSTRUCTION: "+instruction);
 
 
                 //Break the message into an array

@@ -17,6 +17,8 @@ public class PlayerGrid {
         //This is to read from the terminal
         BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
 
+        createGrid(grid);
+        showGrid();
 
         inputCoordinates(buffer, "Carrier","Ca",5);
         inputCoordinates(buffer, "Battleship","Ba",4);
@@ -32,6 +34,7 @@ public class PlayerGrid {
     private void inputCoordinates(BufferedReader buffer, String shipName, String shipType, int holes){
 
         try {
+
 
 
             while(true){

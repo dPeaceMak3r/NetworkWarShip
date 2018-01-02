@@ -81,6 +81,7 @@ public class Player {
 
             helper.standby();
 
+
             while (playerSocket.isBound()){
 
 
@@ -128,6 +129,7 @@ public class Player {
                     System.out.println("===========================================");
                     String []tryShots=buffer.readLine().split(" ");
 
+
                     //Now it needs to check if the input coordinates were inside the grid, or was already said
                     if(checkCoordinates(tryShots,hitGrid)){
                         hitGrid[Integer.parseInt(tryShots[0])][Integer.parseInt(tryShots[1])]=true;
@@ -160,6 +162,16 @@ public class Player {
 
     public static boolean checkCoordinates(String [] tryShots, boolean [][] hitGrid){
 
+        try{
+
+            int checkshot1 = Integer.parseInt(tryShots[0]);
+            int checkshot2 = Integer.parseInt(tryShots[1]);
+
+        }catch (NumberFormatException e){
+            System.out.println("Not a valid number");
+            return false;
+        }
+
         //Checks if there are exactly two coordinates
         if(tryShots.length!=2){
             System.out.println("Invalid input, try again");
@@ -167,11 +179,12 @@ public class Player {
         }
 
         //First we test to see if the given coordinates were inside the grid
-        if(Integer.parseInt(tryShots[0])>=PlayerGrid.ROWS ||Integer.parseInt(tryShots[1])>=PlayerGrid.COLUMNS ){
-            System.out.println(Integer.parseInt(tryShots[0])+" "+Integer.parseInt(tryShots[1]));
-            System.out.println("The given coordinates are out of the grid. Please put new ones");
-            return false;
-        }
+
+            if (Integer.parseInt(tryShots[0]) >= PlayerGrid.ROWS || Integer.parseInt(tryShots[1]) >= PlayerGrid.COLUMNS) {
+                System.out.println(Integer.parseInt(tryShots[0]) + " " + Integer.parseInt(tryShots[1]));
+                System.out.println("The given coordinates are out of the grid. Please put new ones");
+                return false;
+            }
 
 
         //Then check if the coordinates were already said another time
